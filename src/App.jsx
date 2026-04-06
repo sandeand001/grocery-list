@@ -6,6 +6,7 @@ import GroceryListPage from './pages/GroceryListPage'
 import RecipesPage from './pages/RecipesPage'
 import RecipeDetailPage from './pages/RecipeDetailPage'
 import FamilyPage from './pages/FamilyPage'
+import SettingsPage from './pages/SettingsPage'
 import LoadingSpinner from './components/LoadingSpinner'
 
 function PrivateRoutes() {
@@ -19,6 +20,7 @@ function PrivateRoutes() {
       <Layout>
         <Routes>
           <Route path="/family" element={<FamilyPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/family" replace />} />
         </Routes>
       </Layout>
@@ -32,6 +34,7 @@ function PrivateRoutes() {
         <Route path="/recipes" element={<RecipesPage />} />
         <Route path="/recipes/:id" element={<RecipeDetailPage />} />
         <Route path="/family" element={<FamilyPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/grocery" replace />} />
       </Routes>
     </Layout>

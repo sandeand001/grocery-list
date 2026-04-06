@@ -10,7 +10,9 @@ export const CATEGORIES = [
   { id: 'Other',      label: 'Other',      color: 'bg-pink-100 text-pink-800' },
 ]
 
-export const CATEGORY_IDS = CATEGORIES.map((c) => c.id)
+export const ADD_CUSTOM_ID = 'ADD_CUSTOM'
+
+export const CATEGORY_IDS = new Set(CATEGORIES.map((c) => c.id))
 
 export function getCategoryStyle(categoryId) {
   const cat = CATEGORIES.find((c) => c.id === categoryId)

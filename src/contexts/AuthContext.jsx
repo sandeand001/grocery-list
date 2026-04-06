@@ -1,5 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth'
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 
@@ -42,6 +50,15 @@ export function AuthProvider({ children }) {
     await signInWithPopup(auth, provider)
   }
 
+  async function signUpWithEmail(email, password, displayName) {
+    const cred = await createUserWithEmailAndPassword(auth, email, password)
+    await updateProfile(cred.user, { displayName })
+  }
+
+  async function signInWithEmail(email, password) {
+    await signInWithEmailAndPassword(auth, email, password)
+  }
+
   async function logout() {
     await signOut(auth)
   }
@@ -55,7 +72,10 @@ export function AuthProvider({ children }) {
   const familyId = userDoc?.familyId ?? null
 
   return (
-    <AuthContext.Provider value={{ currentUser, userDoc, familyId, loading, signInWithGoogle, logout, refreshUserDoc }}>
+    <AuthContext.Provider value={{
+      currentUser, userDoc, familyId, loading,
+      signInWithGoogle, signUpWithEmail, signInWithEmail, logout, refreshUserDoc,
+    }}>
       {children}
     </AuthContext.Provider>
   )

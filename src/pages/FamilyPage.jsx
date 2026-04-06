@@ -50,7 +50,7 @@ export default function FamilyPage() {
             </code>
             <button
               onClick={copyFamilyId}
-              className="flex-shrink-0 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+              className="flex-shrink-0 px-3 py-2 bg-[var(--color-primary)] text-white text-sm font-medium rounded-lg hover:opacity-90 transition-colors"
             >
               {copied ? '✓ Copied' : 'Copy'}
             </button>
@@ -85,7 +85,7 @@ export default function FamilyPage() {
           <p className="text-sm text-gray-500 mb-4">Start a new family group. Share the ID with family members so they can join.</p>
           <button
             onClick={createFamily}
-            className="w-full py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 active:scale-95 transition-all"
+            className="w-full py-3 bg-[var(--color-primary)] text-white font-semibold rounded-xl hover:opacity-90 active:scale-95 transition-all"
           >
             Create My Family
           </button>
@@ -106,12 +106,12 @@ export default function FamilyPage() {
               placeholder="Family ID"
               value={joinId}
               onChange={(e) => setJoinId(e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-mono"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent font-mono"
             />
             {error && <p className="text-red-500 text-xs">{error}</p>}
             <button
               type="submit"
-              className="w-full py-3 border-2 border-green-600 text-green-700 font-semibold rounded-xl hover:bg-green-50 active:scale-95 transition-all"
+              className="w-full py-3 border-2 border-[var(--color-primary)] text-[var(--color-primary-text)] font-semibold rounded-xl hover:opacity-80 active:scale-95 transition-all"
             >
               Join Family
             </button>

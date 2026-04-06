@@ -11,8 +11,8 @@ export default function GroceryItem({ item, onToggle, onDelete }) {
         onClick={() => onToggle(item.id, !item.checked)}
         className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
           item.checked
-            ? 'bg-green-500 border-green-500'
-            : 'border-gray-300 hover:border-green-400'
+            ? 'bg-[var(--color-primary)] border-[var(--color-primary)]'
+            : 'border-gray-300 hover:border-[var(--color-primary)]'
         }`}
         aria-label={item.checked ? 'Uncheck item' : 'Check item'}
       >

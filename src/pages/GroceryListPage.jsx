@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useGroceryList } from '../hooks/useGroceryList'
-import { CATEGORIES } from '../utils/categories'
+import { CATEGORIES, CATEGORY_IDS } from '../utils/categories'
 import CategoryGroup from '../components/CategoryGroup'
 import AddItemForm from '../components/AddItemForm'
 import LoadingSpinner from '../components/LoadingSpinner'
@@ -10,9 +10,17 @@ export default function GroceryListPage() {
 
   const grouped = useMemo(() => {
     const map = {}
+    // Known categories in display order
     for (const cat of CATEGORIES) {
       const catItems = items.filter((i) => i.category === cat.id)
       if (catItems.length > 0) map[cat.id] = catItems
+    }
+    // Custom categories (not in the known list)
+    for (const item of items) {
+      if (!CATEGORY_IDS.has(item.category)) {
+        if (!map[item.category]) map[item.category] = []
+        map[item.category].push(item)
+      }
     }
     return map
   }, [items])
@@ -50,8 +58,8 @@ export default function GroceryListPage() {
       <div className="px-2 py-2">
         {totalCount === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-[var(--color-primary-light)] rounded-full flex items-center justify-center mb-4">
+              <svg className="w-8 h-8 text-[var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>

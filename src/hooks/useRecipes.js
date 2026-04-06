@@ -37,11 +37,12 @@ export function useRecipes() {
     return unsubscribe
   }, [familyId])
 
-  async function addRecipe({ name, ingredients }) {
+  async function addRecipe({ name, ingredients, steps }) {
     if (!familyId) return
     await addDoc(collection(db, 'families', familyId, 'recipes'), {
       name,
       ingredients,
+      steps: steps || [],
       createdBy: currentUser.uid,
       createdAt: serverTimestamp(),
     })
