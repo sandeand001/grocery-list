@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   collection,
   onSnapshot,
@@ -17,6 +17,7 @@ export function useGroceryList() {
   const { familyId, currentUser } = useAuth()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     if (!familyId) {
@@ -33,54 +34,128 @@ export function useGroceryList() {
     const unsubscribe = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
       setLoading(false)
+    }, (err) => {
+      console.error('Grocery list listener error:', err)
+      setError('Failed to load grocery list')
+      setLoading(false)
     })
 
     return unsubscribe
   }, [familyId])
 
+  const clearError = useCallback(() => setError(null), [])
+
   async function addItem({ name, quantity, category }) {
     if (!familyId) return
-    await addDoc(collection(db, 'families', familyId, 'groceryItems'), {
-      name,
-      quantity,
-      category,
-      checked: false,
-      addedBy: currentUser.uid,
-      addedAt: serverTimestamp(),
-    })
+    try {
+      setError(null)
+      await addDoc(collection(db, 'families', familyId, 'groceryItems'), {
+        name,
+        quantity,
+        category,
+        checked: false,
+        addedBy: currentUser.uid,
+        addedAt: serverTimestamp(),
+      })
+    } catch (err) {
+      console.error('Failed to add item:', err)
+      setError('Failed to add item. Please try again.')
+      throw err
+    }
+  }
+
+  async function updateItem(itemId, updates) {
+    if (!familyId) return
+    try {
+      setError(null)
+      await updateDoc(doc(db, 'families', familyId, 'groceryItems', itemId), updates)
+    } catch (err) {
+      console.error('Failed to update item:', err)
+      setError('Failed to update item.')
+      throw err
+    }
   }
 
   async function toggleItem(itemId, checked) {
     if (!familyId) return
-    await updateDoc(doc(db, 'families', familyId, 'groceryItems', itemId), { checked })
+    try {
+      setError(null)
+      await updateDoc(doc(db, 'families', familyId, 'groceryItems', itemId), { checked })
+    } catch (err) {
+      console.error('Failed to toggle item:', err)
+      setError('Failed to update item.')
+    }
   }
 
   async function deleteItem(itemId) {
     if (!familyId) return
-    await deleteDoc(doc(db, 'families', familyId, 'groceryItems', itemId))
+    try {
+      setError(null)
+      await deleteDoc(doc(db, 'families', familyId, 'groceryItems', itemId))
+    } catch (err) {
+      console.error('Failed to delete item:', err)
+      setError('Failed to delete item.')
+    }
   }
 
   async function clearChecked() {
     if (!familyId) return
-    const checked = items.filter((i) => i.checked)
-    await Promise.all(checked.map((i) => deleteDoc(doc(db, 'families', familyId, 'groceryItems', i.id))))
+    try {
+      setError(null)
+      const checked = items.filter((i) => i.checked)
+      await Promise.all(checked.map((i) => deleteDoc(doc(db, 'families', familyId, 'groceryItems', i.id))))
+    } catch (err) {
+      console.error('Failed to clear checked:', err)
+      setError('Failed to clear checked items.')
+    }
   }
 
+  // Deduplication: merge with existing items by name + category
   async function addItems(newItems) {
     if (!familyId) return
-    await Promise.all(
-      newItems.map((item) =>
-        addDoc(collection(db, 'families', familyId, 'groceryItems'), {
-          name: item.name,
-          quantity: item.quantity || '',
-          category: item.category || 'Other',
-          checked: false,
-          addedBy: currentUser.uid,
-          addedAt: serverTimestamp(),
-        })
-      )
-    )
+    let addedCount = 0
+    let mergedCount = 0
+    try {
+      setError(null)
+      const uncheckedItems = items.filter(i => !i.checked)
+
+      for (const item of newItems) {
+        const itemName = (item.name || '').trim().toLowerCase()
+        const itemCategory = item.category || 'Other'
+        const existing = uncheckedItems.find(
+          (e) => e.name.trim().toLowerCase() === itemName && e.category === itemCategory
+        )
+
+        if (existing) {
+          // Merge: append quantity info
+          const newQty = item.quantity
+            ? existing.quantity
+              ? `${existing.quantity} + ${item.quantity}`
+              : item.quantity
+            : existing.quantity
+          await updateDoc(doc(db, 'families', familyId, 'groceryItems', existing.id), {
+            quantity: newQty,
+          })
+          mergedCount++
+        } else {
+          await addDoc(collection(db, 'families', familyId, 'groceryItems'), {
+            name: item.name,
+            quantity: item.quantity || '',
+            category: itemCategory,
+            checked: false,
+            addedBy: currentUser.uid,
+            addedAt: serverTimestamp(),
+          })
+          addedCount++
+        }
+      }
+      return { addedCount, mergedCount }
+    } catch (err) {
+      console.error('Failed to add items:', err)
+      setError('Failed to add some items to the list.')
+      return { addedCount, mergedCount }
+    }
   }
 
-  return { items, loading, addItem, toggleItem, deleteItem, clearChecked, addItems }
+  return { items, loading, error, clearError, addItem, updateItem, toggleItem, deleteItem, clearChecked, addItems }
 }

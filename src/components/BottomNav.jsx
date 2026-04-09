@@ -46,21 +46,21 @@ const NAV_LINKS = [
 
 export default function BottomNav() {
   const mobileClass = ({ isActive }) =>
-    `flex flex-col items-center gap-0.5 py-2 px-4 text-xs font-medium transition-colors ${
-      isActive ? 'text-[var(--color-primary)]' : 'text-gray-500'
+    `flex flex-col items-center gap-0.5 py-3 px-4 text-xs font-medium transition-colors ${
+      isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'
     }`
 
   const sidebarClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl mx-2 text-sm font-medium transition-colors ${
       isActive
         ? 'bg-[var(--color-primary-light)] text-[var(--color-primary-text)]'
-        : 'text-gray-600 hover:bg-gray-100'
+        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border-light)]'
     }`
 
   return (
     <>
       {/* ── Mobile bottom bar ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-inset-bottom z-50">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-[var(--color-surface)] border-t border-[var(--color-border)] z-50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around">
           {NAV_LINKS.map((link) => (
             <NavLink key={link.to} to={link.to} className={mobileClass}>
@@ -72,8 +72,8 @@ export default function BottomNav() {
       </nav>
 
       {/* ── Desktop sidebar ── */}
-      <nav className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-48 bg-white border-r border-gray-200 z-50">
-        <div className="px-4 py-5 border-b border-gray-100">
+      <nav className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-48 bg-[var(--color-surface)] border-r border-[var(--color-border)] z-50">
+        <div className="px-4 py-5 border-b border-[var(--color-border-light)]">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--color-primary)]">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ export default function BottomNav() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <span className="font-bold text-gray-900 text-base">FamilyCart</span>
+            <span className="font-bold text-[var(--color-text)] text-base">FamilyCart</span>
           </div>
         </div>
         <div className="flex-1 py-3 space-y-1">

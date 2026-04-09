@@ -27,7 +27,7 @@ export default function IngredientRow({ ingredient, index, onChange, onRemove })
           placeholder="Ingredient *"
           value={ingredient.name}
           onChange={(e) => onChange(index, 'name', e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
+          className="px-3 py-2 border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text)] bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent placeholder:text-[var(--color-text-muted)]"
           required
         />
         <input
@@ -35,15 +35,15 @@ export default function IngredientRow({ ingredient, index, onChange, onRemove })
           placeholder="Qty (e.g. 1 cup)"
           value={ingredient.quantity}
           onChange={(e) => onChange(index, 'quantity', e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
+          className="px-3 py-2 border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text)] bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent placeholder:text-[var(--color-text-muted)]"
         />
         <select
           value={selectValue}
           onChange={(e) => handleSelectChange(e.target.value)}
-          className="col-span-2 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent bg-white"
+          className="col-span-2 px-3 py-2 border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text)] bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
         >
           {CATEGORIES.map((c) => (
-            <option key={c.id} value={c.id}>{c.label}</option>
+            <option key={c.id} value={c.id}>{c.icon} {c.label}</option>
           ))}
           <option value={ADD_CUSTOM_ID}>+ Add category…</option>
         </select>
@@ -53,7 +53,7 @@ export default function IngredientRow({ ingredient, index, onChange, onRemove })
             placeholder="Category name *"
             value={ingredient.category || ''}
             onChange={(e) => onChange(index, 'category', e.target.value)}
-            className="col-span-2 px-3 py-2 border border-[var(--color-primary)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
+            className="col-span-2 px-3 py-2 border border-[var(--color-primary)] rounded-lg text-sm text-[var(--color-text)] bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent"
             autoFocus
             required
           />
@@ -62,7 +62,7 @@ export default function IngredientRow({ ingredient, index, onChange, onRemove })
       <button
         type="button"
         onClick={() => onRemove(index)}
-        className="mt-2 text-gray-300 hover:text-red-400 transition-colors p-1 flex-shrink-0"
+        className="mt-2 text-[var(--color-text-muted)] hover:text-red-400 transition-colors p-1 flex-shrink-0 opacity-50 hover:opacity-100"
         aria-label="Remove ingredient"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

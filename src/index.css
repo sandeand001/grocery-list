@@ -7,52 +7,52 @@
   --color-primary: #16a34a;
   --color-primary-dark: #15803d;
   --color-primary-light: #dcfce7;
-  --color-primary-text: #15803d;
+  --color-primary-text: #14532d;
   --color-bg: #f9fafb;
   --color-surface: #ffffff;
   --color-text: #111827;
-  --color-text-muted: #6b7280;
+  --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  --color-border-light: #e9ecef;
 }
 
 [data-theme="blue"] {
   --color-primary: #2563eb;
   --color-primary-dark: #1d4ed8;
   --color-primary-light: #dbeafe;
-  --color-primary-text: #1d4ed8;
+  --color-primary-text: #1e3a8a;
   --color-bg: #f9fafb;
   --color-surface: #ffffff;
   --color-text: #111827;
-  --color-text-muted: #6b7280;
+  --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  --color-border-light: #e9ecef;
 }
 
 [data-theme="orange"] {
-  --color-primary: #f97316;
-  --color-primary-dark: #ea580c;
+  --color-primary: #ea580c;
+  --color-primary-dark: #c2410c;
   --color-primary-light: #ffedd5;
-  --color-primary-text: #ea580c;
+  --color-primary-text: #9a3412;
   --color-bg: #f9fafb;
   --color-surface: #ffffff;
   --color-text: #111827;
-  --color-text-muted: #6b7280;
+  --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  --color-border-light: #e9ecef;
 }
 
 [data-theme="purple"] {
   --color-primary: #9333ea;
   --color-primary-dark: #7e22ce;
   --color-primary-light: #f3e8ff;
-  --color-primary-text: #7e22ce;
+  --color-primary-text: #581c87;
   --color-bg: #f9fafb;
   --color-surface: #ffffff;
   --color-text: #111827;
-  --color-text-muted: #6b7280;
+  --color-text-muted: #4b5563;
   --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  --color-border-light: #e9ecef;
 }
 
 [data-theme="slate"] {
@@ -66,6 +66,18 @@
   --color-text-muted: #94a3b8;
   --color-border: #334155;
   --color-border-light: #1e293b;
+}
+
+/* ─── Dark mode input visibility fix ───────────────────────────────────── */
+[data-theme="slate"] input,
+[data-theme="slate"] textarea,
+[data-theme="slate"] select {
+  color: var(--color-text) !important;
+  background-color: var(--color-surface) !important;
+}
+[data-theme="slate"] input::placeholder,
+[data-theme="slate"] textarea::placeholder {
+  color: var(--color-text-muted) !important;
 }
 
 /* ─── Dark theme overrides ─────────────────────────────────────────────── */
@@ -129,5 +141,190 @@
     background-color: var(--color-bg);
     color: var(--color-text);
   }
+}
+
+/* ─── Terminal style ────────────────────────────────────────────────────── */
+.layout-style-terminal {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #0d0d0d;
+}
+.layout-style-terminal body {
+  background-color: #0d0d0d;
+  color: #00ff41;
+}
+.layout-style-terminal .bg-white,
+.layout-style-terminal .bg-gray-50 {
+  background-color: #0d0d0d !important;
+  color: #00ff41 !important;
+  border-color: #003d0f !important;
+}
+.layout-style-terminal .text-gray-900,
+.layout-style-terminal .text-gray-800,
+.layout-style-terminal .text-gray-700 {
+  color: #00ff41 !important;
+}
+.layout-style-terminal .text-gray-500,
+.layout-style-terminal .text-gray-400,
+.layout-style-terminal .text-gray-600 {
+  color: #007a1f !important;
+}
+.layout-style-terminal .border-gray-100,
+.layout-style-terminal .border-gray-200,
+.layout-style-terminal .border-b,
+.layout-style-terminal .border-y {
+  border-color: #003d0f !important;
+}
+.layout-style-terminal .shadow-sm {
+  box-shadow: none !important;
+}
+.layout-style-terminal .rounded-2xl,
+.layout-style-terminal .rounded-xl,
+.layout-style-terminal .rounded-lg,
+.layout-style-terminal .rounded-b-lg {
+  border-radius: 0 !important;
+}
+/* Terminal: override gradient page headers to flat black */
+.layout-style-terminal [class*="bg-gradient-to"] {
+  background: #0d0d0d !important;
+  border-bottom: 1px dashed #00ff41 !important;
+}
+.layout-style-terminal [class*="bg-gradient-to"] * {
+  color: #00ff41 !important;
+}
+.layout-style-terminal [class*="bg-gradient-to"] [class*="bg-white\\/"] {
+  background-color: rgba(0, 255, 65, 0.15) !important;
+}
+.layout-style-terminal input,
+.layout-style-terminal textarea,
+.layout-style-terminal select {
+  background-color: #0d0d0d !important;
+  color: #00ff41 !important;
+  border-color: #00ff41 !important;
+  border-radius: 0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+.layout-style-terminal input::placeholder,
+.layout-style-terminal textarea::placeholder {
+  color: #007a1f !important;
+}
+.layout-style-terminal nav.bg-white,
+.layout-style-terminal nav[style] {
+  background-color: #0d0d0d !important;
+  border-top: 1px dashed #00ff41 !important;
+}
+/* Blinking cursor prompt */
+.layout-style-terminal::after {
+  content: '';
+  display: none;
+}
+
+/* ─── Broadsheet style ──────────────────────────────────────────────────── */
+.layout-style-broadsheet {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.layout-style-broadsheet h1,
+.layout-style-broadsheet h2,
+.layout-style-broadsheet h3,
+.layout-style-broadsheet .font-semibold,
+.layout-style-broadsheet .font-bold {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.layout-style-broadsheet body,
+.layout-style-broadsheet .bg-gray-50 {
+  background-color: #f0ece0 !important;
+}
+.layout-style-broadsheet .bg-white {
+  background-color: #faf8f3 !important;
+}
+/* Remove all rounded corners and shadows — editorial feel */
+.layout-style-broadsheet .shadow-sm {
+  box-shadow: none !important;
+}
+.layout-style-broadsheet .rounded-2xl,
+.layout-style-broadsheet .rounded-xl,
+.layout-style-broadsheet .rounded-lg,
+.layout-style-broadsheet .rounded-b-lg,
+.layout-style-broadsheet .rounded-full {
+  border-radius: 0 !important;
+}
+.layout-style-broadsheet .border-gray-100,
+.layout-style-broadsheet .border-gray-200 {
+  border-color: #c9b99a !important;
+}
+.layout-style-broadsheet .border-b {
+  border-bottom: 1px solid #c9b99a !important;
+}
+/* Override gradient headers to sepia masthead */
+.layout-style-broadsheet [class*="bg-gradient-to"] {
+  background: #1a1a1a !important;
+}
+.layout-style-broadsheet [class*="bg-gradient-to"] * {
+  color: #f0ece0 !important;
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+.layout-style-broadsheet [class*="bg-gradient-to"] [class*="bg-white\\/"] {
+  background-color: rgba(240, 236, 224, 0.15) !important;
+}
+.layout-style-broadsheet input,
+.layout-style-broadsheet textarea,
+.layout-style-broadsheet select {
+  font-family: Georgia, serif !important;
+  border-radius: 0 !important;
+  border-color: #c9b99a !important;
+  background-color: #faf8f3 !important;
+}
+
+/* ─── Corkboard style ───────────────────────────────────────────────────── */
+.layout-style-corkboard {
+  font-family: 'Caveat', cursive;
+}
+.layout-style-corkboard body,
+.layout-style-corkboard .bg-gray-50 {
+  background-color: #b5936b !important;
+  /* Cork texture via repeating pattern */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23a07850' opacity='0.25'/%3E%3Ccircle cx='5' cy='5' r='0.5' fill='%238b6914' opacity='0.15'/%3E%3C/svg%3E") !important;
+}
+.layout-style-corkboard .bg-white {
+  background-color: transparent !important;
+}
+.layout-style-corkboard .shadow-sm {
+  box-shadow: none !important;
+}
+.layout-style-corkboard .rounded-2xl,
+.layout-style-corkboard .rounded-xl,
+.layout-style-corkboard .rounded-lg {
+  border-radius: 2px !important;
+}
+.layout-style-corkboard .border-gray-100,
+.layout-style-corkboard .border-gray-200,
+.layout-style-corkboard .border-b,
+.layout-style-corkboard .border-y {
+  border-color: transparent !important;
+}
+/* Override gradient headers — warm brown banner */
+.layout-style-corkboard [class*="bg-gradient-to"] {
+  background: #6b4226 !important;
+}
+.layout-style-corkboard [class*="bg-gradient-to"] * {
+  font-family: 'Caveat', cursive !important;
+}
+.layout-style-corkboard [class*="bg-gradient-to"] [class*="bg-white\\/"] {
+  background-color: rgba(255, 253, 231, 0.2) !important;
+}
+.layout-style-corkboard input,
+.layout-style-corkboard textarea,
+.layout-style-corkboard select {
+  font-family: 'Caveat', cursive !important;
+  font-size: 1.1rem !important;
+  background-color: #fffde7 !important;
+  border-color: #c9a96e !important;
+}
+.layout-style-corkboard nav {
+  background-color: #6b4226 !important;
+  border-color: #4a2e18 !important;
+}
+.layout-style-corkboard nav * {
+  color: #f5e6d3 !important;
 }
 

@@ -44,7 +44,9 @@ export default function LoginPage() {
     try {
       await signInWithGoogle()
     } catch (err) {
-      setError('Google sign-in failed. Please try again.')
+      console.error('Google sign-in error:', err.code, err.message)
+      if (err.code === 'auth/popup-closed-by-user') return
+      setError(`Google sign-in failed: ${err.code || err.message}`)
     }
   }
 

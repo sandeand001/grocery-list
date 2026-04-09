@@ -7,7 +7,15 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Family data: only members whose familyId matches can access
+    // Family document: any authenticated user can create, members can read/write
+    match /families/{familyId} {
+      allow create: if request.auth != null;
+      allow read, update: if request.auth != null
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.familyId == familyId;
+    }
+
+    // Family subcollections: only members whose familyId matches can access
     match /families/{familyId}/{document=**} {
       allow read, write: if request.auth != null
         && exists(/databases/$(database)/documents/users/$(request.auth.uid))

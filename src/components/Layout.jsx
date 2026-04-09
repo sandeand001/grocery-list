@@ -2,11 +2,10 @@ import BottomNav from './BottomNav'
 
 export default function Layout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)' }}>
       <BottomNav />
-      {/* Offset for desktop sidebar (lg:ml-48) and mobile bottom nav (pb-20) */}
-      <main className="lg:ml-48 pb-20 lg:pb-0 min-h-screen">
-        <div className="max-w-4xl mx-auto">
+      <main className="lg:ml-48 min-h-screen" style={{ paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))' }}>
+        <div className="max-w-2xl mx-auto lg:pb-0">
           {children}
         </div>
       </main>
