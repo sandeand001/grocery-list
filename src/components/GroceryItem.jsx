@@ -55,7 +55,28 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
           flex: 1,
         }}>
           {' '}{item.name}
-          {item.quantity && <span style={{ color: '#007a1f' }}> [{item.quantity}]</span>}
+          {editingQty ? (
+            <input
+              ref={qtyInputRef}
+              type="text"
+              value={qtyValue}
+              onChange={(e) => setQtyValue(e.target.value)}
+              onBlur={handleQtySave}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleQtySave()
+                if (e.key === 'Escape') setEditingQty(false)
+              }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #00ff41', color: '#00ff41', fontFamily: 'inherit', fontSize: 'inherit', width: '5em', outline: 'none', padding: 0 }}
+            />
+          ) : (
+            <span
+              onClick={startQtyEdit}
+              style={{ color: '#007a1f', cursor: item.checked ? 'default' : 'pointer' }}
+            >
+              {item.quantity ? ` [${item.quantity}]` : (item.checked ? '' : ' [+ qty]')}
+            </span>
+          )}
         </span>
         <span
           onClick={() => onDelete(item.id)}
@@ -94,9 +115,26 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
           />
           <span style={{ fontSize: '0.9rem', color: '#1a1a1a' }}>
             <strong style={{ fontFamily: '"Playfair Display", Georgia, serif' }}>{item.name}</strong>
-            {item.quantity && (
-              <span style={{ color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem' }}>
-                {' '}— {item.quantity}
+            {editingQty ? (
+              <input
+                ref={qtyInputRef}
+                type="text"
+                value={qtyValue}
+                onChange={(e) => setQtyValue(e.target.value)}
+                onBlur={handleQtySave}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleQtySave()
+                  if (e.key === 'Escape') setEditingQty(false)
+                }}
+                onClick={(e) => e.stopPropagation()}
+                style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #6b5a3e', color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', fontFamily: 'inherit', width: '5em', outline: 'none', padding: 0, marginLeft: '4px' }}
+              />
+            ) : (
+              <span
+                onClick={startQtyEdit}
+                style={{ color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', cursor: 'pointer' }}
+              >
+                {item.quantity ? ` — ${item.quantity}` : ' — + qty'}
               </span>
             )}
           </span>
@@ -136,8 +174,27 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
           textDecoration: item.checked ? 'line-through' : 'none',
         }}>
           {item.name}
-          {item.quantity && (
-            <span style={{ fontSize: '0.85rem', color: '#8b7355' }}> ({item.quantity})</span>
+          {editingQty ? (
+            <input
+              ref={qtyInputRef}
+              type="text"
+              value={qtyValue}
+              onChange={(e) => setQtyValue(e.target.value)}
+              onBlur={handleQtySave}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleQtySave()
+                if (e.key === 'Escape') setEditingQty(false)
+              }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #8b7355', color: '#8b7355', fontFamily: 'inherit', fontSize: '0.85rem', width: '4em', outline: 'none', padding: 0 }}
+            />
+          ) : (
+            <span
+              onClick={startQtyEdit}
+              style={{ fontSize: '0.85rem', color: '#8b7355', cursor: item.checked ? 'default' : 'pointer' }}
+            >
+              {item.quantity ? ` (${item.quantity})` : (item.checked ? '' : ' (+ qty)')}
+            </span>
           )}
         </span>
         <span
