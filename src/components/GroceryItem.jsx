@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../contexts/ThemeContext'
 
 export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
@@ -6,12 +6,34 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState(item.name)
   const [editQty, setEditQty] = useState(item.quantity || '')
+  const [editingQty, setEditingQty] = useState(false)
+  const [qtyValue, setQtyValue] = useState(item.quantity || '')
+  const qtyInputRef = useRef(null)
+
+  useEffect(() => {
+    if (editingQty && qtyInputRef.current) qtyInputRef.current.focus()
+  }, [editingQty])
 
   function handleSave() {
     if (editName.trim() && onUpdate) {
       onUpdate(item.id, { name: editName.trim(), quantity: editQty.trim() })
     }
     setEditing(false)
+  }
+
+  function handleQtySave() {
+    const trimmed = qtyValue.trim()
+    if (onUpdate && trimmed !== (item.quantity || '')) {
+      onUpdate(item.id, { quantity: trimmed })
+    }
+    setEditingQty(false)
+  }
+
+  function startQtyEdit(e) {
+    e.stopPropagation()
+    if (item.checked) return
+    setQtyValue(item.quantity || '')
+    setEditingQty(true)
   }
 
   // ── Terminal: each item is a line of stdout ──
@@ -185,8 +207,32 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
         }`}>
           {item.name}
         </span>
-        {item.quantity && (
-          <span className="text-xs text-[var(--color-text-muted)]">{item.quantity}</span>
+        {editingQty ? (
+          <input
+            ref={qtyInputRef}
+            type="text"
+            value={qtyValue}
+            onChange={(e) => setQtyValue(e.target.value)}
+            onBlur={handleQtySave}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleQtySave()
+              if (e.key === 'Escape') setEditingQty(false)
+            }}
+            placeholder="Qty"
+            className="text-xs w-24 px-0 py-0.5 bg-transparent border-b border-[var(--color-primary)] focus:outline-none text-[var(--color-text)]"
+            onClick={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <span
+            onClick={startQtyEdit}
+            className={`text-xs transition-colors ${
+              item.checked
+                ? 'text-[var(--color-text-muted)]'
+                : 'text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-primary)]'
+            }`}
+          >
+            {item.quantity || (item.checked ? '' : '+ qty')}
+          </span>
         )}
       </div>
 

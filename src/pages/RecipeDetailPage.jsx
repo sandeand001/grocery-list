@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useRecipes } from '../hooks/useRecipes'
 import { useGroceryList } from '../hooks/useGroceryList'
+import { useMenu } from '../hooks/useMenu'
 import { getCategoryStyle } from '../utils/categories'
 import LoadingSpinner from '../components/LoadingSpinner'
 import AddRecipeForm from '../components/AddRecipeForm'
@@ -12,10 +13,12 @@ export default function RecipeDetailPage() {
   const navigate = useNavigate()
   const { recipes, loading, updateRecipe } = useRecipes()
   const { addItems } = useGroceryList()
+  const { addMenuItem } = useMenu()
   const toast = useToast()
   const [cookMode, setCookMode] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [adding, setAdding] = useState(false)
+  const [addingToMenu, setAddingToMenu] = useState(false)
   const [editing, setEditing] = useState(false)
 
   if (loading) return <LoadingSpinner />
@@ -71,6 +74,18 @@ export default function RecipeDetailPage() {
       toast.error('Failed to add items to list')
     } finally {
       setAdding(false)
+    }
+  }
+
+  async function handleAddToMenu() {
+    setAddingToMenu(true)
+    try {
+      await addMenuItem({ name: recipe.name, recipeId: recipe.id })
+      toast.success(`${recipe.name} added to menu`)
+    } catch {
+      toast.error('Failed to add to menu')
+    } finally {
+      setAddingToMenu(false)
     }
   }
 
@@ -182,20 +197,33 @@ export default function RecipeDetailPage() {
           </div>
         )}
 
-        {/* Add to list — prominent but not boxy */}
+        {/* Add to list / menu — prominent but not boxy */}
         <div className="pt-4 pb-2">
           <div className="h-px bg-[var(--color-border-light)] mb-6" />
-          <button
-            onClick={handleAddToList}
-            disabled={adding}
-            className="w-full py-4 bg-[var(--color-primary)] text-white font-semibold rounded-2xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            {adding ? 'Adding...' : 'Add All to Grocery List'}
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={handleAddToList}
+              disabled={adding}
+              className="w-full py-4 bg-[var(--color-primary)] text-white font-semibold rounded-2xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {adding ? 'Adding...' : 'Add All to Grocery List'}
+            </button>
+            <button
+              onClick={handleAddToMenu}
+              disabled={addingToMenu}
+              className="w-full py-3.5 border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-semibold rounded-2xl hover:opacity-80 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              {addingToMenu ? 'Adding...' : 'Add to Menu'}
+            </button>
+          </div>
         </div>
       </div>
 

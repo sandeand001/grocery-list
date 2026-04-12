@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import GroceryListPage from './pages/GroceryListPage'
 import RecipesPage from './pages/RecipesPage'
 import RecipeDetailPage from './pages/RecipeDetailPage'
+import MenuPage from './pages/MenuPage'
 import FamilyPage from './pages/FamilyPage'
 import SettingsPage from './pages/SettingsPage'
 import JoinPage from './pages/JoinPage'
@@ -49,6 +50,7 @@ function PrivateRoutes() {
     <Layout>
       <Routes>
         <Route path="/grocery" element={<GroceryListPage />} />
+        <Route path="/menu" element={<MenuPage />} />
         <Route path="/recipes" element={<RecipesPage />} />
         <Route path="/recipes/:id" element={<RecipeDetailPage />} />
         <Route path="/family" element={<FamilyPage />} />
