@@ -49,35 +49,38 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
         >
           {item.checked ? '  ✓' : '  ○'}
         </span>
-        <span style={{
-          color: item.checked ? '#003d0f' : '#00ff41',
-          textDecoration: item.checked ? 'line-through' : 'none',
-          flex: 1,
-        }}>
-          {' '}{item.name}
-          {editingQty ? (
-            <input
-              ref={qtyInputRef}
-              type="text"
-              value={qtyValue}
-              onChange={(e) => setQtyValue(e.target.value)}
-              onBlur={handleQtySave}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleQtySave()
-                if (e.key === 'Escape') setEditingQty(false)
-              }}
-              onClick={(e) => e.stopPropagation()}
-              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #00ff41', color: '#00ff41', fontFamily: 'inherit', fontSize: 'inherit', width: '5em', outline: 'none', padding: 0 }}
-            />
-          ) : (
-            <span
-              onClick={startQtyEdit}
-              style={{ color: '#007a1f', cursor: item.checked ? 'default' : 'pointer' }}
-            >
-              {item.quantity ? ` [${item.quantity}]` : (item.checked ? '' : ' [+ qty]')}
-            </span>
-          )}
-        </span>
+        <div style={{ flex: 1 }}>
+          <span style={{
+            color: item.checked ? '#003d0f' : '#00ff41',
+            textDecoration: item.checked ? 'line-through' : 'none',
+          }}>
+            {' '}{item.name}
+          </span>
+          <div style={{ paddingLeft: '1ch' }}>
+            {editingQty ? (
+              <input
+                ref={qtyInputRef}
+                type="text"
+                value={qtyValue}
+                onChange={(e) => setQtyValue(e.target.value)}
+                onBlur={handleQtySave}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleQtySave()
+                  if (e.key === 'Escape') setEditingQty(false)
+                }}
+                onClick={(e) => e.stopPropagation()}
+                style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #00ff41', color: '#00ff41', fontFamily: 'inherit', fontSize: 'inherit', width: '6em', outline: 'none', padding: '2px 0' }}
+              />
+            ) : (
+              <span
+                onClick={startQtyEdit}
+                style={{ color: '#007a1f', cursor: item.checked ? 'default' : 'pointer', display: 'inline-block', padding: '2px 0' }}
+              >
+                {item.quantity ? `[${item.quantity}]` : (item.checked ? '' : '[+ qty]')}
+              </span>
+            )}
+          </div>
+        </div>
         <span
           onClick={() => onDelete(item.id)}
           className="opacity-0 group-hover:opacity-100 transition-opacity"
@@ -98,7 +101,7 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
         className="mb-1 break-inside-avoid"
         style={{ fontFamily: 'Georgia, serif' }}
       >
-        <div className="flex items-baseline gap-1.5">
+        <div className="flex items-start gap-1.5">
           <span
             onClick={() => onToggle(item.id, !item.checked)}
             style={{
@@ -110,37 +113,39 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
               cursor: 'pointer',
               flexShrink: 0,
               position: 'relative',
-              top: '-1px',
+              top: '6px',
             }}
           />
-          <span style={{ fontSize: '0.9rem', color: '#1a1a1a' }}>
-            <strong style={{ fontFamily: '"Playfair Display", Georgia, serif' }}>{item.name}</strong>
-            {editingQty ? (
-              <input
-                ref={qtyInputRef}
-                type="text"
-                value={qtyValue}
-                onChange={(e) => setQtyValue(e.target.value)}
-                onBlur={handleQtySave}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleQtySave()
-                  if (e.key === 'Escape') setEditingQty(false)
-                }}
-                onClick={(e) => e.stopPropagation()}
-                style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #6b5a3e', color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', fontFamily: 'inherit', width: '5em', outline: 'none', padding: 0, marginLeft: '4px' }}
-              />
-            ) : (
-              <span
-                onClick={startQtyEdit}
-                style={{ color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', cursor: 'pointer' }}
-              >
-                {item.quantity ? ` — ${item.quantity}` : ' — + qty'}
-              </span>
-            )}
-          </span>
+          <div style={{ flex: 1 }}>
+            <strong style={{ fontFamily: '"Playfair Display", Georgia, serif', fontSize: '0.9rem', color: '#1a1a1a' }}>{item.name}</strong>
+            <div>
+              {editingQty ? (
+                <input
+                  ref={qtyInputRef}
+                  type="text"
+                  value={qtyValue}
+                  onChange={(e) => setQtyValue(e.target.value)}
+                  onBlur={handleQtySave}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleQtySave()
+                    if (e.key === 'Escape') setEditingQty(false)
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #6b5a3e', color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', fontFamily: 'inherit', width: '6em', outline: 'none', padding: '2px 0' }}
+                />
+              ) : (
+                <span
+                  onClick={startQtyEdit}
+                  style={{ color: '#6b5a3e', fontStyle: 'italic', fontSize: '0.8rem', cursor: 'pointer', display: 'inline-block', padding: '2px 0' }}
+                >
+                  {item.quantity ? item.quantity : '+ qty'}
+                </span>
+              )}
+            </div>
+          </div>
           <span
             onClick={() => onDelete(item.id)}
-            style={{ color: '#c9b99a', cursor: 'pointer', fontSize: '0.7rem', marginLeft: 'auto', flexShrink: 0 }}
+            style={{ color: '#c9b99a', cursor: 'pointer', fontSize: '0.7rem', flexShrink: 0 }}
           >
             ✕
           </span>
@@ -153,7 +158,7 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
   if (style === 'corkboard') {
     return (
       <div
-        className="flex items-center gap-2 py-0.5"
+        className="flex items-start gap-2 py-0.5"
         style={{ fontFamily: '"Caveat", cursive' }}
       >
         <span
@@ -163,17 +168,20 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
             fontSize: '1.1rem',
             lineHeight: 1,
             color: item.checked ? '#8b7355' : '#3d2b1f',
+            marginTop: '2px',
           }}
         >
           {item.checked ? '☑' : '☐'}
         </span>
-        <span style={{
-          flex: 1,
-          fontSize: '1.05rem',
-          color: item.checked ? '#a89279' : '#3d2b1f',
-          textDecoration: item.checked ? 'line-through' : 'none',
-        }}>
-          {item.name}
+        <div style={{ flex: 1 }}>
+          <span style={{
+            fontSize: '1.05rem',
+            color: item.checked ? '#a89279' : '#3d2b1f',
+            textDecoration: item.checked ? 'line-through' : 'none',
+            display: 'block',
+          }}>
+            {item.name}
+          </span>
           {editingQty ? (
             <input
               ref={qtyInputRef}
@@ -186,17 +194,17 @@ export default function GroceryItem({ item, onToggle, onDelete, onUpdate }) {
                 if (e.key === 'Escape') setEditingQty(false)
               }}
               onClick={(e) => e.stopPropagation()}
-              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #8b7355', color: '#8b7355', fontFamily: 'inherit', fontSize: '0.85rem', width: '4em', outline: 'none', padding: 0 }}
+              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid #8b7355', color: '#8b7355', fontFamily: 'inherit', fontSize: '0.85rem', width: '6em', outline: 'none', padding: '2px 0' }}
             />
           ) : (
             <span
               onClick={startQtyEdit}
-              style={{ fontSize: '0.85rem', color: '#8b7355', cursor: item.checked ? 'default' : 'pointer' }}
+              style={{ fontSize: '0.85rem', color: '#8b7355', cursor: item.checked ? 'default' : 'pointer', display: 'inline-block', padding: '2px 0' }}
             >
-              {item.quantity ? ` (${item.quantity})` : (item.checked ? '' : ' (+ qty)')}
+              {item.quantity ? item.quantity : (item.checked ? '' : '+ qty')}
             </span>
           )}
-        </span>
+        </div>
         <span
           onClick={() => onDelete(item.id)}
           style={{ color: '#c9a96e', cursor: 'pointer', fontSize: '0.9rem' }}
