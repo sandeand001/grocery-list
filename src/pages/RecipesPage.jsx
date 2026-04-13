@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRecipes } from '../hooks/useRecipes'
 import RecipeCard from '../components/RecipeCard'
 import AddRecipeForm from '../components/AddRecipeForm'
+import ImportRecipeForm from '../components/ImportRecipeForm'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useTheme } from '../contexts/ThemeContext'
 
@@ -9,6 +10,7 @@ export default function RecipesPage() {
   const { recipes, loading, error, addRecipe, deleteRecipe } = useRecipes()
   const { style: visualStyle } = useTheme()
   const [showForm, setShowForm] = useState(false)
+  const [showImport, setShowImport] = useState(false)
   const [search, setSearch] = useState('')
   const [groupBy, setGroupBy] = useState('none') // 'none' | 'category' | 'cuisine'
 
@@ -60,6 +62,25 @@ export default function RecipesPage() {
     )
   }
 
+  if (showImport) {
+    return (
+      <div>
+        <div className="sticky top-0 z-30 bg-[var(--color-bg)]/95 backdrop-blur-md">
+          <div className="px-5 pt-5 pb-3">
+            <h1 className="text-2xl font-bold text-[var(--color-text)] tracking-tight">Import Recipes</h1>
+          </div>
+          <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-border)] to-transparent" />
+        </div>
+        <div className="px-5 py-4">
+          <ImportRecipeForm
+            onImport={addRecipe}
+            onCancel={() => setShowImport(false)}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div>
       {/* Error banner */}
@@ -77,6 +98,15 @@ export default function RecipesPage() {
               <h1 className="text-2xl font-bold text-[var(--color-text)] tracking-tight">Recipes</h1>
               <p className="text-sm text-[var(--color-text-muted)] mt-0.5">{recipes.length} recipe{recipes.length !== 1 ? 's' : ''}</p>
             </div>
+            <button
+              onClick={() => setShowImport(true)}
+              className="text-sm text-[var(--color-text-muted)] font-medium hover:text-[var(--color-primary)] transition-colors flex items-center gap-1"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Import
+            </button>
             <button
               onClick={() => setShowForm(true)}
               className="text-sm text-[var(--color-primary)] font-medium hover:opacity-70 transition-opacity flex items-center gap-1"
